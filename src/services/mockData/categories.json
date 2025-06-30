@@ -1,0 +1,86 @@
+[
+  {
+    "Id": 1,
+    "name": "Salary",
+    "icon": "Banknote",
+    "color": "text-success",
+    "type": "income"
+  },
+  {
+    "Id": 2,
+    "name": "Freelance",
+    "icon": "Laptop",
+    "color": "text-info",
+    "type": "income"
+  },
+  {
+    "Id": 3,
+    "name": "Investment",
+    "icon": "TrendingUp",
+    "color": "text-primary",
+    "type": "income"
+  },
+  {
+    "Id": 4,
+    "name": "Rent",
+    "icon": "Home",
+    "color": "text-error",
+    "type": "expense"
+  },
+  {
+    "Id": 5,
+    "name": "Groceries",
+    "icon": "ShoppingCart",
+    "color": "text-warning",
+    "type": "expense"
+  },
+  {
+    "Id": 6,
+    "name": "Utilities",
+    "icon": "Zap",
+    "color": "text-info",
+    "type": "expense"
+  },
+  {
+    "Id": 7,
+    "name": "Transportation",
+    "icon": "Car",
+    "color": "text-primary",
+    "type": "expense"
+  },
+  {
+    "Id": 8,
+    "name": "Food & Dining",
+    "icon": "Coffee",
+    "color": "text-accent",
+    "type": "expense"
+  },
+  {
+    "Id": 9,
+    "name": "Entertainment",
+    "icon": "Film",
+    "color": "text-error",
+    "type": "expense"
+  },
+  {
+    "Id": 10,
+    "name": "Health & Fitness",
+    "icon": "Heart",
+    "color": "text-success",
+    "type": "expense"
+  },
+  {
+    "Id": 11,
+    "name": "Shopping",
+    "icon": "ShoppingBag",
+    "color": "text-warning",
+    "type": "expense"
+  },
+  {
+    "Id": 12,
+    "name": "Education",
+    "icon": "BookOpen",
+    "color": "text-info",
+    "type": "expense"
+  }
+]

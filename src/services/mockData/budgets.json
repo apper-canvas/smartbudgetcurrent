@@ -1,0 +1,44 @@
+[
+  {
+    "Id": 1,
+    "categoryId": "4",
+    "amount": 1200,
+    "month": "2024-01",
+    "year": 2024
+  },
+  {
+    "Id": 2,
+    "categoryId": "5",
+    "amount": 400,
+    "month": "2024-01",
+    "year": 2024
+  },
+  {
+    "Id": 3,
+    "categoryId": "6",
+    "amount": 150,
+    "month": "2024-01",
+    "year": 2024
+  },
+  {
+    "Id": 4,
+    "categoryId": "7",
+    "amount": 200,
+    "month": "2024-01",
+    "year": 2024
+  },
+  {
+    "Id": 5,
+    "categoryId": "8",
+    "amount": 300,
+    "month": "2024-01",
+    "year": 2024
+  },
+  {
+    "Id": 6,
+    "categoryId": "9",
+    "amount": 100,
+    "month": "2024-01",
+    "year": 2024
+  }
+]
