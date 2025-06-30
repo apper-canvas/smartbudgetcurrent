@@ -93,8 +93,37 @@ this.transactions.splice(index, 1)
           spending[category.Id].amount += transaction.amount
         }
       })
+return Object.values(spending)
+  }
+
+  async getExportData(filters = {}) {
+    await new Promise(resolve => setTimeout(resolve, 200))
     
-    return Object.values(spending)
+    let filteredTransactions = [...this.transactions]
+    
+    // Apply filters if provided
+    if (filters.type) {
+      filteredTransactions = filteredTransactions.filter(t => t.type === filters.type)
+    }
+    
+    if (filters.category) {
+      filteredTransactions = filteredTransactions.filter(t => t.category === filters.category)
+    }
+    
+    if (filters.startDate) {
+      filteredTransactions = filteredTransactions.filter(t => 
+        new Date(t.date) >= new Date(filters.startDate)
+      )
+    }
+    
+    if (filters.endDate) {
+      filteredTransactions = filteredTransactions.filter(t => 
+        new Date(t.date) <= new Date(filters.endDate)
+      )
+    }
+    
+    return filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date))
   }
 }
+
 export const transactionService = new TransactionService()

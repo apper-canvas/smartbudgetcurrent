@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import ApperIcon from '@/components/ApperIcon'
-
-const Select = ({ 
+const Select = forwardRef(({ 
   label, 
   value, 
   onChange, 
@@ -12,7 +11,7 @@ const Select = ({
   disabled = false,
   className = '',
   ...props 
-}) => {
+}, ref) => {
   return (
     <div className={`space-y-2 ${className}`}>
       {label && (
@@ -22,15 +21,17 @@ const Select = ({
         </label>
       )}
       
-      <div className="relative">
+<div className="relative">
         <select
+          ref={ref}
           value={value}
           onChange={onChange}
           disabled={disabled}
           className={`
             block w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-secondary shadow-sm transition-all duration-200 appearance-none
             focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary
-            disabled:bg-gray-50 disabled:text-gray-400
+            disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed
+            hover:border-gray-400 transition-colors
             ${error ? 'border-error focus:border-error focus:ring-error' : ''}
           `}
           {...props}
@@ -56,8 +57,9 @@ const Select = ({
           <span>{error}</span>
         </p>
       )}
-    </div>
+</div>
   )
-}
+})
 
+Select.displayName = 'Select'
 export default Select

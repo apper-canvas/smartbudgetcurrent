@@ -1,28 +1,34 @@
-import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { format, startOfMonth, endOfMonth } from 'date-fns'
-import StatCard from '@/components/molecules/StatCard'
-import QuickActionCard from '@/components/molecules/QuickActionCard'
-import TransactionItem from '@/components/molecules/TransactionItem'
-import TransactionForm from '@/components/organisms/TransactionForm'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
-import Card from '@/components/atoms/Card'
-import Button from '@/components/atoms/Button'
-import ApperIcon from '@/components/ApperIcon'
-import { transactionService } from '@/services/api/transactionService'
-import { budgetService } from '@/services/api/budgetService'
-
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { endOfMonth, format, startOfMonth } from "date-fns";
+import { exportService } from "@/services/api/exportService";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Transactions from "@/components/pages/Transactions";
+import TransactionForm from "@/components/organisms/TransactionForm";
+import Card from "@/components/atoms/Card";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import QuickActionCard from "@/components/molecules/QuickActionCard";
+import TransactionItem from "@/components/molecules/TransactionItem";
+import StatCard from "@/components/molecules/StatCard";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
+import { transactionService } from "@/services/api/transactionService";
+import { budgetService } from "@/services/api/budgetService";
+import categories from "@/services/mockData/categories.json";
+import budgets from "@/services/mockData/budgets.json";
+import transactionsData from "@/services/mockData/transactions.json";
 const Dashboard = () => {
   const [transactions, setTransactions] = useState([])
   const [budgets, setBudgets] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [showTransactionForm, setShowTransactionForm] = useState(false)
+const [showTransactionForm, setShowTransactionForm] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState(null)
   const [currentDate] = useState(new Date())
-
+  const [exportLoading, setExportLoading] = useState(false)
   useEffect(() => {
     loadData()
   }, [])
@@ -67,10 +73,23 @@ const Dashboard = () => {
   }
 
   const handleFormCancel = () => {
-    setShowTransactionForm(false)
+setShowTransactionForm(false)
     setEditingTransaction(null)
   }
 
+  const handleExport = async (format) => {
+    if (!format) return
+    
+    setExportLoading(true)
+    try {
+      await exportService.exportTransactions(format)
+      toast.success(`Transactions exported successfully as ${format.toUpperCase()}`)
+    } catch (error) {
+      toast.error(`Failed to export transactions: ${error.message}`)
+    } finally {
+      setExportLoading(false)
+    }
+  }
   // Calculate current month statistics
   const currentMonthStart = startOfMonth(currentDate)
   const currentMonthEnd = endOfMonth(currentDate)
@@ -107,16 +126,29 @@ const Dashboard = () => {
           <p className="text-gray-600 mt-1">
             Welcome back! Here's your financial overview for {format(currentDate, 'MMMM yyyy')}
           </p>
-        </div>
+</div>
         
-        <Button
-          icon="Plus"
-          onClick={() => setShowTransactionForm(true)}
-          className="shadow-lg"
-        >
-          Add Transaction
-        </Button>
-      </div>
+        <div className="flex items-center space-x-3">
+          <Select
+            value=""
+            onChange={(e) => handleExport(e.target.value)}
+            options={[
+              { value: 'csv', label: 'Export as CSV' },
+              { value: 'pdf', label: 'Export as PDF' }
+            ]}
+            placeholder={exportLoading ? 'Exporting...' : 'Export Data'}
+            disabled={exportLoading}
+            className="min-w-[140px]"
+          />
+          
+          <Button
+            icon="Plus"
+            onClick={() => setShowTransactionForm(true)}
+            className="shadow-lg"
+          >
+            Add Transaction
+          </Button>
+        </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
