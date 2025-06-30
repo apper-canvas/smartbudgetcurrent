@@ -142,13 +142,14 @@ setShowTransactionForm(false)
           />
           
           <Button
-            icon="Plus"
+icon="Plus"
             onClick={() => setShowTransactionForm(true)}
             className="shadow-lg"
           >
             Add Transaction
           </Button>
         </div>
+      </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
