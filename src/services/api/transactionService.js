@@ -57,9 +57,44 @@ class TransactionService {
       throw new Error('Transaction not found')
     }
     
-    this.transactions.splice(index, 1)
+this.transactions.splice(index, 1)
     return true
   }
-}
 
+  async getSpendingByCategory(startDate, endDate, categories) {
+    await new Promise(resolve => setTimeout(resolve, 200))
+    
+    const spending = {}
+    
+    // Initialize spending for all expense categories
+    categories
+      .filter(c => c.type === 'expense')
+      .forEach(category => {
+        spending[category.Id] = {
+          categoryId: category.Id,
+          categoryName: category.name,
+          amount: 0
+        }
+      })
+    
+    // Calculate actual spending
+    this.transactions
+      .filter(t => {
+        const transactionDate = new Date(t.date)
+        return (
+          t.type === 'expense' &&
+          transactionDate >= startDate &&
+          transactionDate <= endDate
+        )
+      })
+      .forEach(transaction => {
+        const category = categories.find(c => c.name === transaction.category)
+        if (category && spending[category.Id]) {
+          spending[category.Id].amount += transaction.amount
+        }
+      })
+    
+    return Object.values(spending)
+  }
+}
 export const transactionService = new TransactionService()

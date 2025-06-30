@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { format, startOfMonth, endOfMonth } from 'date-fns'
+import { format, startOfMonth, endOfMonth, subMonths, addMonths } from 'date-fns'
 import BudgetCard from '@/components/molecules/BudgetCard'
+import BudgetComparisonChart from '@/components/molecules/BudgetComparisonChart'
 import BudgetForm from '@/components/organisms/BudgetForm'
 import Loading from '@/components/ui/Loading'
 import Error from '@/components/ui/Error'
@@ -19,9 +20,11 @@ const Budgets = () => {
   const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [showForm, setShowForm] = useState(false)
+const [showForm, setShowForm] = useState(false)
   const [editingBudget, setEditingBudget] = useState(null)
   const [currentDate] = useState(new Date())
+  const [comparisonStartDate, setComparisonStartDate] = useState(startOfMonth(subMonths(new Date(), 2)))
+  const [comparisonEndDate, setComparisonEndDate] = useState(endOfMonth(new Date()))
 
   useEffect(() => {
     loadData()
@@ -153,7 +156,44 @@ const Budgets = () => {
             </div>
           </div>
         </Card>
-      </div>
+</div>
+
+      {/* Budget Comparison Chart */}
+      <Card>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-secondary">
+            Budget vs Actual Spending
+          </h2>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <label className="text-sm font-medium text-gray-600">From:</label>
+              <input
+                type="month"
+                value={format(comparisonStartDate, 'yyyy-MM')}
+                onChange={(e) => setComparisonStartDate(startOfMonth(new Date(e.target.value)))}
+                className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <label className="text-sm font-medium text-gray-600">To:</label>
+              <input
+                type="month"
+                value={format(comparisonEndDate, 'yyyy-MM')}
+                onChange={(e) => setComparisonEndDate(endOfMonth(new Date(e.target.value)))}
+                className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              />
+            </div>
+          </div>
+        </div>
+
+        <BudgetComparisonChart
+          budgets={budgets}
+          categories={categories}
+          transactions={transactions}
+          startDate={comparisonStartDate}
+          endDate={comparisonEndDate}
+        />
+      </Card>
 
       {/* Budget Progress */}
       <Card>
